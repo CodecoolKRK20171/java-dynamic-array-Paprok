@@ -46,7 +46,7 @@ public class DynamicIntArray {
     }
 
     public void insert(int insertId, int item) {
-        if(insertId < index){
+        if (insertId < index) {
             int end = ++index;
             moveItems(array, item, insertId, end);
         } else {
@@ -54,18 +54,38 @@ public class DynamicIntArray {
         }
     }
 
-    private int[] moveItems(int[] arr, int item, int start, int end){
-        if(start < end){
+    private int[] moveItems(int[] arr, int item, int start, int end) {
+        if (start < end) {
             int temp = arr[start];
             arr[start] = item;
-           return moveItems(arr, temp, ++start, end);
+            return moveItems(arr, temp, ++start, end);
         } else {
-            return  arr;
+            return arr;
         }
     }
 
-    public void remove(int index) throws ArrayIndexOutOfBoundsException {
+    public void remove(int removeIndex) throws ArrayIndexOutOfBoundsException {
+        int lastIndex = index - 1;
+        if (isOutOfBounds(removeIndex, lastIndex)) {
+            throw new ArrayIndexOutOfBoundsException();
+        } else {
+            moveItems(this.array, removeIndex, lastIndex);
+            this.index = lastIndex;
+        }
+    }
 
+    private int[] moveItems(int[] arr, int start, int end) {
+        if (start < end) {
+            arr[start] = arr[++start];
+            return moveItems(arr, start, end);
+        } else {
+            return arr;
+        }
+    }
+
+
+    private boolean isOutOfBounds(int removeIndex, int lastIndex) {
+        return removeIndex < 0 || removeIndex > lastIndex;
     }
 
     public String toString() {
